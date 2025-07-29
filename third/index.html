@@ -34,15 +34,14 @@
       //2.is-hiddenをリムーブしてクリックした要素以外にis-hiddenを付与
       
       $(function(){
-        let menu = $(".nav"),
-            list = $(".contents"),
-            searchMenu = menu.find("li"),
-            searchList = list.find("li");
-            searchMenu.on("click",function(){
+          let searchList = $('.contents').find('li');
+            $('.nav').find('li').on("click",function(){
               let contentsIndex = $(this).index();
-                  searchList.addClass("is-hidden").eq(contentsIndex).removeClass("is-hidden");
-              })
-            });
+              searchList.addClass("is-hidden").eq(contentsIndex).removeClass("is-hidden");
+                  })
+              });
+
+
     </script>
   </body>
 </html>
