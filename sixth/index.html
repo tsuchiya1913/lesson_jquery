@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../common/css/reset.css">
+  <link rel="stylesheet" href="../../common/css/base.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <title>Document</title>
+</head>
+<body>
+  <div class="wrapper" id="wrapper">
+    <button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>
+  </div>
+  <script src="../../common/js/jquery.js"></script>
+  <script>
+    // 回答はここに書いてね
+  $(function search() {
+      $('#pokemon_search').click(function() {
+    let random_number = Math.floor(Math.random() * 151) + 1;
+        $.ajax({
+  url: 'https://pokeapi.co/api/v2/pokemon/' + random_number,
+  method: 'GET',
+  dataType:"json"
+}).done(function(res) {
+  //探すクリック時のイベント処理
+  let imageURL = res.sprites.front_default;
+    encountHtml =
+  `
+    <p class="name"></p>
+    <div>
+      <img class="img" src="" alt="読み込めませんでした。">
+    </div>
+    <div>
+      <button class="btn" id="catch">捕まえる</button>
+      <button class="btn" data-js="reset">逃げる</button>
+    </div>
+  `
+  $('#wrapper').html(encountHtml);
+  $('.img').attr('src',imageURL);
+
+  //戻る処理
+  let top =
+    `
+    <button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>
+    `
+        back = {
+          reset: function(){
+            $('#wrapper').html(top);
+
+          },
+          restart:function() {
+          }
+        };
+        $('[data-js]').click(function() {
+          getback = $(this).data('js');
+          topScreen = back[getback];
+          if (typeof topScreen === 'function') {
+            topScreen();
+            search();
+          };
+        });
+  $.ajax({
+    url:'https://pokeapi.co/api/v2/pokemon-species/' + random_number,
+    method:'GET',
+    dataType:'json'
+  }).done(function(suc){
+    jaName = suc.names.find(n => n.language.name === 'ja').name;
+    $('.name').text(jaName);
+  });
+  $('#catch').click(function() {
+    if (Math.random() < 0.5) {
+      get_poke();
+    } else {
+      escape_poke();
+    };
+  //戻る処理
+  $('[data-js]').click(function() {
+        getback = $(this).data('js');
+        topScreen = back[getback];
+          if (typeof topScreen === 'function')
+          topScreen();
+          search();
+        });
+  });
+  function get_poke() {
+    let doneHtml =
+  `
+    <p class="name">ゲットしました</p>
+    <div>
+      <img class="img" src="" alt="読み込めませんでした。">
+    </div>
+    <button class="btn" data-js="reset">戻る</button>
+  `
+    $('#wrapper').html(doneHtml);
+      $.ajax({
+        url:'https://pokeapi.co/api/v2/item/4',
+        method:'GET',
+        dataType:'json'
+      }).done(function(get_monster){
+      ballURL = get_monster.sprites.default;
+      $('.img').attr('src',ballURL);
+        });
+          };
+  function escape_poke() {
+    let failHtml =
+  `
+    <p class="text">逃げられてしまった...</p>
+    <button class="btn mt" data-js="reset">戻る</button>
+  `
+      $('#wrapper').html(failHtml);
+          };
+}).fail(function(err) {
+  通信失敗時の処理を記載
+  console.log("データの取得に失敗しました。");
+});
+      });
+    });
+  </script>
+</body>
+</html>
