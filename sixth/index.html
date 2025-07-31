@@ -24,7 +24,6 @@
   method: 'GET',
   dataType:"json"
 }).done(function(res) {
-  //探すクリック時のイベント処理
   let imageURL = res.sprites.front_default;
     encountHtml =
   `
@@ -39,8 +38,6 @@
   `
   $('#wrapper').html(encountHtml);
   $('.img').attr('src',imageURL);
-
-  //戻る処理
   let top =
     `
     <button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>
@@ -75,7 +72,6 @@
     } else {
       escape_poke();
     };
-  //戻る処理
   $('[data-js]').click(function() {
         getback = $(this).data('js');
         topScreen = back[getback];
@@ -112,8 +108,7 @@
       $('#wrapper').html(failHtml);
           };
 }).fail(function(err) {
-  通信失敗時の処理を記載
-  console.log("データの取得に失敗しました。");
+  
 });
       });
     });
